@@ -37,6 +37,12 @@ describe("Escrow", () => {
       inspector.address,
       lender.address
     );
+    //Approve property
+    transaction = await realEstate.connect(seller).approve(escrow.address, 1);
+    await transaction.wait();
+    //List property
+    transaction = await escrow.connect(seller).list(1);
+    await transaction.wait();
   });
 
   //test chai mocha conditions
@@ -64,5 +70,11 @@ describe("Escrow", () => {
     });
 
     /* it("get signers & save the addresses", async () => {}); */
+  });
+
+  describe("Listing", () => {
+    it("Update Ownership", async () => {
+      expect(await realEstate.ownerOf(1)).to.be.equal(escrow.address);
+    });
   });
 });
